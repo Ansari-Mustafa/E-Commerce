@@ -1,0 +1,71 @@
+[
+  {
+    "name": "Item 1",
+    "img": "/logo.png",
+    "price": 190
+  },
+  {
+    "name": "Item 2",
+    "img": "deezignlab-logo.png",
+    "price": 1200
+  },
+  {
+    "name": "Item 3",
+    "img": "item3.jpg",
+    "price": 390
+  },
+  {
+    "name": "Item 4",
+    "img": "/logo.png",
+    "price": 470
+  },
+  {
+    "name": "Item 5",
+    "img": "item2.jpg",
+    "price": 420
+  },
+  {
+    "name": "Item 6",
+    "img": "item3.jpg",
+    "price": 690
+  },
+  {
+    "name": "Item 7",
+    "img": "/logo.png",
+    "price": 990
+  },
+  {
+    "name": "Item 8",
+    "img": "item2.jpg",
+    "price": 200
+  },
+  {
+    "name": "Item 9",
+    "img": "item3.jpg",
+    "price": 390
+  },
+  {
+    "name": "test",
+    "img": null,
+    "price": 100,
+    "stock": 10
+  },
+  {
+    "name": "t1",
+    "img": "nvm_log1.jpg",
+    "price": 23,
+    "stock": 20
+  },
+  {
+    "name": "itemx",
+    "img": "BOT_DRAWING 1.png",
+    "price": 10,
+    "stock": 12
+  },
+  {
+    "name": "te",
+    "img": "nvm_log2.jpg",
+    "price": 10,
+    "stock": 1
+  }
+]
