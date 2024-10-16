@@ -4,6 +4,8 @@
     hide-delimiters
     progress="#42b883"
     show-arrows="hover"
+    interval="4000"
+    cycle
     >
       <template v-slot:prev="{ props }">
         <v-btn
