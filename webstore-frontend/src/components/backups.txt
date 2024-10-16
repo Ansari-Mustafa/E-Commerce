@@ -1,0 +1,40 @@
+<v-btn icon @click="searchDialog = true">
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+          <v-dialog
+            v-model="searchDialog"
+            width="auto"
+            transition="dialog-top-transition"
+          >
+            <v-card 
+              varient="text"
+              min-height="120"
+              width="auto"
+            >
+            <v-btn
+                  class="position-absolute top-0 right-0"
+                  icon="mdi-close"
+                  variant="text"
+                  @click="searchDialog = false && focusTextField"
+            ></v-btn>
+            <v-form @submit.prevent>
+              <v-row class="d-flex align-center mt-10 mr-1">
+                <v-text-field
+                v-model="SearchBar"
+                label="Search"
+                min-width="300"
+                max-width="400"
+                class="ml-4"
+                variant="outlined"
+                hide-details=false
+                ref="textField"
+              ></v-text-field>
+              <v-btn class="" type="submit" icon variant="text" rounded="lg" height="56">
+                <v-icon>
+                mdi-magnify
+                </v-icon>
+              </v-btn>
+              </v-row>
+            </v-form>
+            </v-card>
+          </v-dialog>

@@ -16,12 +16,13 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          primary: "#DDDDDD",
+          primary: "#3C40AB",
           secondary: colors.blue.darken4,
           background: '#F4F4F4',
           backgroundsec: '#EEEEEE',
           tableheadbg: '#368CEA',
-          tablebg: '#CFD8DC'
+          tablebg: '#CFD8DC',
+          lab: '#438573'
         },
       },
       dark: {

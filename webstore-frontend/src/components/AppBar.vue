@@ -6,115 +6,183 @@
       dark
       elevation="11"
       flat
-      rounded="b"
       shaped
       :height="68"
-    >      
-      <v-img src="@/assets/logo.png" 
-      :height="60"
-      :max-width="60"
-      aspect-ratio="1/1"
-      cover 
-      class="mx-2"></v-img>
-      <v-img src="@/assets/Deezign.png" 
-      :max-width="220"
-      class="mr-1"
-      ></v-img>
-      <v-img src="@/assets/Lab.png" 
-      :max-width="140"
-      ></v-img>
+    >
+    <v-row>
+        
+      <v-col v-if="isMobile" class="d-flex align-center justify-start ms-2">
+        <v-btn rounded="lg"
+        icon="mdi-menu" @click="navDrawer = !navDrawer">
+        </v-btn>
+      </v-col>  
       
-      <v-spacer></v-spacer>
+      <v-col class="d-flex align-center justify-center ms-2" >
+        <v-row>
+          <v-img src="@/assets/logo.png" 
+          :height="60"
+          :max-width="60"
+          :min-width="50"
+          aspect-ratio="1/1"
+          cover 
+          class="mx-2"
+          @click="navigateTo('/')">
+          </v-img>
+          <div v-if="!isMobile" class="gill-sans-font pa-0 d-flex flex-row align-center">
+            <p class="text-h5 mr-1 font-weight-bold">DEEZIGN</p>
+            <p class="text-h3 font-weight-bold text-lab">LAB</p> 
+          </div>
+        </v-row>
+      </v-col>
+        
+        <v-col v-if="!isMobile" class="d-flex align-center justify-ceter">
+          <v-tabs v-model="tab" background-color="primary" color="white">
+            <v-tab value="home" @click="navigateTo('/')">
+              <span>Home</span>
+              <v-icon>mdi-home</v-icon>
+            </v-tab>
+            <v-tab value="categories" @click="navigateTo('/categories')">
+              <span>Categories</span>
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
+            </v-tab>
+            <v-tab value="products" @click="navigateTo('/products')">
+              <span>Products</span>
+              <v-icon>mdi-shopping</v-icon>
+            </v-tab>
+            <v-tab value="services" @click="navigateTo('/services')">
+              <span>Services</span>
+              <v-icon>mdi-shape-plus</v-icon>
+            </v-tab>
+            <v-tab value="about" @click="navigateTo('/about')">
+              <span>About</span>
+              <v-icon>mdi-information-outline</v-icon>
+            </v-tab>
+          </v-tabs>
+        </v-col>
+          
+        <v-col class="d-flex align-center justify-end">
 
-      <div class="d-flex align-end h-100 mb-6">
-        <v-btn value="home">
-          <span>Home</span>
+          <v-text-field v-if=!isMobile
+          @focus="searchBarClosed = false"
+          @blur="searchBarClosed = true"
+          placeholder="Search"
+          v-model="search"
+          filled
+          dense
+          variant="text"
+          prepend-inner-icon="mdi-magnify"
+          class="mt-6 expanding-search"
+          :class="{'closed-search' : searchBarClosed && !search}"
+          clearable
+          ></v-text-field>
 
-          <v-icon>mdi-home</v-icon>
-        </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
 
-        <v-btn value="category">
-          <span>Categories</span>
-
-          <v-icon>mdi-format-list-bulleted-square</v-icon>
-        </v-btn>
-
-        <v-btn value="Products">
-          <span>Products</span>
-
-          <v-icon>mdi-shopping</v-icon>
-        </v-btn>
-
-        <v-btn value="about">
-          <span>Services</span>
-
-          <v-icon>mdi-shape-plus</v-icon>
-        </v-btn>
-
-        <v-btn value="about">
-          <span>About</span>
-
-          <v-icon>mdi-information-outline</v-icon>
-        </v-btn>
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-cart</v-icon>
-      </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-cart</v-icon>
+          </v-btn>
+        </v-col>
+    </v-row>
     </v-app-bar>
+    <v-navigation-drawer
+  v-model="navDrawer"
+  temporary
+  color="primary"
+>
+  <v-list density="compact" nav>
+    <v-list-item-group>
+      <v-text-field
+          placeholder="Search"
+          filled
+          dense
+          variant="outlined"
+          prepend-inner-icon="mdi-magnify"
+          class="mt-2"
+          clearable
+          ></v-text-field>
+      <v-divider></v-divider>
+      <v-list-item
+        class="d-flex justify-space-between mb-2"
+        @click="navigateTo('/')"
+        append-icon="mdi-home"
+      >
+        <span>Home</span>
+      </v-list-item>
+      <v-list-item
+        class="d-flex justify-space-between mb-2"
+        @click="navigateTo('/categories')"
+        append-icon="mdi-format-list-bulleted-square"
+      >
+        <span>Categories</span>
+      </v-list-item>
+      <v-list-item
+        class="d-flex justify-space-between mb-2"
+        @click="navigateTo('/products')"
+        append-icon="mdi-shopping"
+      >
+        <span>Products</span>
+      </v-list-item>
+      <v-list-item
+        class="d-flex justify-space-between mb-2"
+        @click="navigateTo('/services')"
+        append-icon="mdi-shape-plus"
+      >
+        <span>Services</span>
+      </v-list-item>
+      <v-list-item
+        class="d-flex justify-space-between mb-2"
+        @click="navigateTo('/about')"
+        append-icon="mdi-information-outline"
+      >
+        <span>About</span>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
+</v-navigation-drawer>
+
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+import { watch } from 'vue'
+import { useDisplay } from 'vuetify'
+
+const { mobile } = useDisplay();
+const isMobile = ref(mobile.value); // Initialize with the current value
+
+// Watch for changes in mobile display state
+watch(mobile, (newValue) => {
+  isMobile.value = newValue; // Update isMobile whenever mobile changes
+});
+
+const router = useRouter();
+const tab = ref('home');
+const searchDialog = ref(false);
+const navDrawer = ref(false);
+const searchBarClosed = ref(true);
+
+const navigateTo = (path) => {
+  router.push(path);
+};
+
   const logo = computed(() => { 
     return "@/assets/logo.png";
   })
 
-  const items = [
-    {
-      title: 'Vuetify Documentation',
-      icon: `$vuetify`,
-      href: 'https://vuetifyjs.com/',
-    },
-    {
-      title: 'Vuetify Support',
-      icon: 'mdi-shield-star-outline',
-      href: 'https://support.vuetifyjs.com/',
-    },
-    {
-      title: 'Vuetify X',
-      icon: ['M2.04875 3.00002L9.77052 13.3248L1.99998 21.7192H3.74882L10.5519 14.3697L16.0486 21.7192H22L13.8437 10.8137L21.0765 3.00002H19.3277L13.0624 9.76874L8.0001 3.00002H2.04875ZM4.62054 4.28821H7.35461L19.4278 20.4308H16.6937L4.62054 4.28821Z'],
-      href: 'https://x.com/vuetifyjs',
-    },
-    {
-      title: 'Vuetify GitHub',
-      icon: `mdi-github`,
-      href: 'https://github.com/vuetifyjs/vuetify',
-    },
-    {
-      title: 'Vuetify Discord',
-      icon: ['M22,24L16.75,19L17.38,21H4.5A2.5,2.5 0 0,1 2,18.5V3.5A2.5,2.5 0 0,1 4.5,1H19.5A2.5,2.5 0 0,1 22,3.5V24M12,6.8C9.32,6.8 7.44,7.95 7.44,7.95C8.47,7.03 10.27,6.5 10.27,6.5L10.1,6.33C8.41,6.36 6.88,7.53 6.88,7.53C5.16,11.12 5.27,14.22 5.27,14.22C6.67,16.03 8.75,15.9 8.75,15.9L9.46,15C8.21,14.73 7.42,13.62 7.42,13.62C7.42,13.62 9.3,14.9 12,14.9C14.7,14.9 16.58,13.62 16.58,13.62C16.58,13.62 15.79,14.73 14.54,15L15.25,15.9C15.25,15.9 17.33,16.03 18.73,14.22C18.73,14.22 18.84,11.12 17.12,7.53C17.12,7.53 15.59,6.36 13.9,6.33L13.73,6.5C13.73,6.5 15.53,7.03 16.56,7.95C16.56,7.95 14.68,6.8 12,6.8M9.93,10.59C10.58,10.59 11.11,11.16 11.1,11.86C11.1,12.55 10.58,13.13 9.93,13.13C9.29,13.13 8.77,12.55 8.77,11.86C8.77,11.16 9.28,10.59 9.93,10.59M14.1,10.59C14.75,10.59 15.27,11.16 15.27,11.86C15.27,12.55 14.75,13.13 14.1,13.13C13.46,13.13 12.94,12.55 12.94,11.86C12.94,11.16 13.45,10.59 14.1,10.59Z'],
-      href: 'https://community.vuetifyjs.com/',
-    },
-    {
-      title: 'Vuetify Reddit',
-      icon: `mdi-reddit`,
-      href: 'https://reddit.com/r/vuetifyjs',
-    },
-  ]
 </script>
 
 <style scoped lang="sass">
+  .expanding-search
+    transition: max-width 0.3s !important
+    max-width: 300px
+    &.closed-search
+      max-width: 48px
+
   .social-link :deep(.v-icon)
     color: rgba(var(--v-theme-on-background), var(--v-disabled-opacity))
     text-decoration: none
@@ -122,4 +190,6 @@
 
     &:hover
       color: rgba(25, 118, 210, 1)
+
+  
 </style>
