@@ -8,9 +8,11 @@
           :style="{ maxHeight: rowHeight + 'px', minHeight: '360px' }" 
         >
           <ItemCard
+            :id="item.id"
             :name="item.name"
             :img="item.img"
             :price="item.price"
+            :stock="item.stock"
           />
         </v-col>
       </v-row>
