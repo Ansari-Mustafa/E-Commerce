@@ -1,150 +1,148 @@
 <template>
+  <div class="d-flex justify-center align-center mt-10 mb-2">
+    <h1 class="text-h2 gill-sans-font font-weight-bold">Add Products</h1>
+  </div>
   <v-container>
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field
+      <v-row class="mx-auto my-2">
+        <v-text-field
         v-model="product.name"
+        :rules="nameRules"
         label="Product Name"
-        variant="outlined"
-        :rules="[rules.required]"
         required
+        variant="outlined"
+        class="mr-4"
       ></v-text-field>
-
-      <v-textarea
-        v-model="product.description"
-        label="Product Description"
-        variant="outlined"
-        :rules="[rules.required]"
-        required
-      ></v-textarea>
 
       <v-text-field
         v-model="product.category"
+        :rules="categoryRules"
         label="Category"
-        variant="outlined"
-        :rules="[rules.required]"
         required
-      ></v-text-field>
-
-      <v-text-field
-        v-model="product.coverImage"
-        label="Cover Image URL"
         variant="outlined"
-        :rules="[rules.required]"
-        required
       ></v-text-field>
-
-      <v-text-field
-        v-model="product.stock"
-        label="Stock"
-        variant="outlined"
-        :rules="[rules.required, rules.numeric]"
-        required
-      ></v-text-field>
-
-      <v-text-field
-        v-model="product.price"
-        label="Price"
-        variant="outlined"
-        :rules="[rules.required, rules.numeric]"
-        required
-      ></v-text-field>
-
-      <v-text-field
-        v-model="product.old_price"
-        label="Old Price"
-        variant="outlined"
-        :rules="[rules.numeric]"
-      ></v-text-field>
+      </v-row>
 
       <v-textarea
-        v-model="product.images"
-        label="Image URLs (comma-separated)"
-        variant="outlined"
-        :rules="[rules.required]"
+      class="my-2"
+        v-model="product.description"
+        :rules="descriptionRules"
+        label="Description"
         required
-        hint="Enter multiple image URLs separated by commas."
+        variant="outlined"
       ></v-textarea>
 
-      <v-text-field
-        v-model="product.rating"
-        label="Rating (0-5)"
-        variant="outlined"
-        :rules="[rules.required, rules.numeric]"
+      <v-row class="mx-auto my-2">
+        <v-text-field
+        v-model="product.coverImage"
+        :rules="coverImageRules"
+        label="Cover Image URL"
         required
+        variant="outlined"
+        class="mr-4"
       ></v-text-field>
 
-      <v-btn @click="submit" color="primary">Add Product</v-btn>
+      <v-text-field
+        v-model="product.images"
+        label="Images"
+        @input="updateImages"
+        required
+        variant="outlined"
+      ></v-text-field>
+      </v-row>
 
-      <v-alert
-        v-if="successMessage"
-        type="success"
-        dismissible
-        @close="successMessage = ''"
-      >
-        {{ successMessage }}
-      </v-alert>
+      <v-text-field
+      class="my-2"
+        v-model.number="product.stock"
+        :rules="stockRules"
+        label="Stock"
+        type="number"
+        required
+        variant="outlined"
+      ></v-text-field>
 
-      <v-alert
-        v-if="errorMessage"
-        type="error"
-        dismissible
-        @close="errorMessage = ''"
-      >
-        {{ errorMessage }}
-      </v-alert>
+      <v-row class="mx-auto my-2">
+        <v-text-field
+        v-model.number="product.price"
+        :rules="priceRules"
+        label="New Price"
+        type="number"
+        required
+        variant="outlined"
+        class="mr-4"
+      ></v-text-field>
+
+      <v-text-field
+        v-model.number="product.old_price"
+        label="Old Price"
+        type="number"
+        variant="outlined"
+      ></v-text-field>
+      </v-row>
+
+      <v-text-field
+      class="my-2"
+        v-model.number="product.rating"
+        label="Rating (0-5)"
+        type="number"
+        min="0"
+        max="5"
+        variant="outlined"
+      ></v-text-field>
+
+      <v-text-field
+      class="my-2"
+        v-model.number="product.sortOrder"
+        label="Sort Order"
+        type="number"
+        min="0"
+        variant="outlined"
+      ></v-text-field>
+
+      <v-btn color="primary"@click="submit" :disabled="!valid">Submit</v-btn>
     </v-form>
   </v-container>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       valid: false,
-      successMessage: '',
-      errorMessage: '',
       product: {
         name: '',
         description: '',
         category: '',
         coverImage: '',
-        stock: '',
-        price: '',
-        old_price: '',
-        images: '',
-        rating: '',
+        stock: null,
+        price: null,
+        old_price: null,
+        images: [],
+        rating: null,
+        sortOrder: 0,
       },
-      rules: {
-        required: value => !!value || 'Required.',
-        numeric: value => !isNaN(value) || 'Must be a number.',
-      },
+      nameRules: [(v) => !!v || 'Name is required'],
+      descriptionRules: [(v) => !!v || 'Description is required'],
+      categoryRules: [(v) => !!v || 'Category is required'],
+      coverImageRules: [(v) => !!v || 'Cover image URL is required'],
+      stockRules: [(v) => (v >= 0) || 'Stock must be at least 0'],
+      priceRules: [(v) => (v >= 0) || 'Price must be at least 0'],
     };
   },
   methods: {
+    updateImages() {
+      this.product.images = this.product.images.split(',').map(img => img.trim());
+    },
     async submit() {
-      if (this.$refs.form.validate()) {
-        // Split the images string into an array
-        this.product.images = this.product.images.split(',').map(url => url.trim());
-
-        try {
-          const response = await fetch('http://localhost:5000/api/products/create-product', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(this.product),
-          });
-
-          const data = await response.json();
-          if (response.ok) {
-            this.successMessage = data.message;
-            this.resetForm();
-          } else {
-            this.errorMessage = 'Error: ' + data.message;
-          }
-        } catch (error) {
-          this.errorMessage = 'Network error: ' + error.message;
-        }
+      try {
+        const response = await axios.post(`https://backend-or8k.onrender.com/api/products/create-product`, this.product);
+        this.$toast.success(response.data.message);
+        this.resetForm();
+      } catch (error) {
+        console.error("Error adding Product!", error);
+        this.$toast.error('Error adding product!');
       }
     },
     resetForm() {
@@ -153,20 +151,19 @@ export default {
         description: '',
         category: '',
         coverImage: '',
-        stock: '',
-        price: '',
-        old_price: '',
-        images: '',
-        rating: '',
+        stock: null,
+        price: null,
+        old_price: null,
+        images: [],
+        rating: null,
+        sortOrder: 0,
       };
       this.$refs.form.reset();
-    },
+    }
   },
 };
 </script>
 
 <style scoped>
-.v-alert {
-  margin-top: 20px;
-}
+/* Add any additional styles here */
 </style>

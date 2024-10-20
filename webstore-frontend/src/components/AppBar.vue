@@ -74,7 +74,7 @@
           clearable
           ></v-text-field>
 
-          <v-btn icon>
+          <v-btn icon @click="navigateTo('/add-products')">
             <v-icon>mdi-account</v-icon>
           </v-btn>
 
