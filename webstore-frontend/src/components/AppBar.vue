@@ -18,7 +18,6 @@
       </v-col>  
       
       <v-col class="d-flex align-center justify-center ms-2" >
-        <v-row>
           <v-img src="@/assets/logo.png" 
           :height="60"
           :max-width="60"
@@ -32,7 +31,6 @@
             <p class="text-h5 mr-1 font-weight-bold">DEEZIGN</p>
             <p class="text-h3 font-weight-bold text-lab">LAB</p> 
           </div>
-        </v-row>
       </v-col>
         
         <v-col v-if="!isMobile" class="d-flex align-center justify-ceter">
@@ -77,7 +75,7 @@
           ></v-text-field>
 
           <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-btn>
 
           <v-btn icon @click="openCart" class="mr-2">
