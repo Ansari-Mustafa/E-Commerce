@@ -18,7 +18,6 @@
       </v-col>  
       
       <v-col class="d-flex align-center justify-center ms-2" >
-        <v-row>
           <v-img src="@/assets/logo.png" 
           :height="60"
           :max-width="60"
@@ -32,7 +31,6 @@
             <p class="text-h5 mr-1 font-weight-bold">DEEZIGN</p>
             <p class="text-h3 font-weight-bold text-lab">LAB</p> 
           </div>
-        </v-row>
       </v-col>
         
         <v-col v-if="!isMobile" class="d-flex align-center justify-ceter">
@@ -77,77 +75,93 @@
           ></v-text-field>
 
           <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-btn>
 
-          <v-btn icon>
-            <v-icon>mdi-cart</v-icon>
-          </v-btn>
+          <v-btn icon @click="openCart" class="mr-2">
+          <v-badge :content="totalCartItems">
+              <v-icon>mdi-cart</v-icon> 
+          </v-badge>
+        </v-btn>
         </v-col>
     </v-row>
     </v-app-bar>
+    
     <v-navigation-drawer
-  v-model="navDrawer"
-  temporary
-  color="primary"
->
-  <v-list density="compact" nav>
-    <v-list-item-group>
-      <v-text-field
-          placeholder="Search"
-          filled
-          dense
-          variant="outlined"
-          prepend-inner-icon="mdi-magnify"
-          class="mt-2"
-          clearable
-          ></v-text-field>
-      <v-divider></v-divider>
-      <v-list-item
-        class="d-flex justify-space-between mb-2"
-        @click="navigateTo('/')"
-        append-icon="mdi-home"
-      >
-        <span>Home</span>
-      </v-list-item>
-      <v-list-item
-        class="d-flex justify-space-between mb-2"
-        @click="navigateTo('/categories')"
-        append-icon="mdi-format-list-bulleted-square"
-      >
-        <span>Categories</span>
-      </v-list-item>
-      <v-list-item
-        class="d-flex justify-space-between mb-2"
-        @click="navigateTo('/products')"
-        append-icon="mdi-shopping"
-      >
-        <span>Products</span>
-      </v-list-item>
-      <v-list-item
-        class="d-flex justify-space-between mb-2"
-        @click="navigateTo('/services')"
-        append-icon="mdi-shape-plus"
-      >
-        <span>Services</span>
-      </v-list-item>
-      <v-list-item
-        class="d-flex justify-space-between mb-2"
-        @click="navigateTo('/about')"
-        append-icon="mdi-information-outline"
-      >
-        <span>About</span>
-      </v-list-item>
-    </v-list-item-group>
-  </v-list>
-</v-navigation-drawer>
+      v-model="navDrawer"
+      temporary
+      color="primary"
+    >
+      <v-list density="compact" nav>
+        <v-list-item-group>
+          <v-text-field
+              placeholder="Search"
+              filled
+              dense
+              variant="outlined"
+              prepend-inner-icon="mdi-magnify"
+              class="mt-2"
+              clearable
+              ></v-text-field>
+          <v-divider></v-divider>
+          <v-list-item
+            class="d-flex justify-space-between mb-2"
+            @click="navigateTo('/')"
+            append-icon="mdi-home"
+          >
+            <span>Home</span>
+          </v-list-item>
+          <v-list-item
+            class="d-flex justify-space-between mb-2"
+            @click="navigateTo('/categories')"
+            append-icon="mdi-format-list-bulleted-square"
+          >
+            <span>Categories</span>
+          </v-list-item>
+          <v-list-item
+            class="d-flex justify-space-between mb-2"
+            @click="navigateTo('/products')"
+            append-icon="mdi-shopping"
+          >
+            <span>Products</span>
+          </v-list-item>
+          <v-list-item
+            class="d-flex justify-space-between mb-2"
+            @click="navigateTo('/services')"
+            append-icon="mdi-shape-plus"
+          >
+            <span>Services</span>
+          </v-list-item>
+          <v-list-item
+            class="d-flex justify-space-between mb-2"
+            @click="navigateTo('/about')"
+            append-icon="mdi-information-outline"
+          >
+            <span>About</span>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
 
+    <Cart ref="cartRef" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import Cart from '@/components/CartDialog.vue';
+
+import { useCartStore } from '@/stores/cart';
+const cartStore = useCartStore();
+const cartRef = ref(null);
 import { useRouter } from 'vue-router';
+
+const openCart = () => {
+  if (cartRef.value) {
+    cartRef.value.open();
+  }
+};
+const totalCartItems = computed(() => cartStore.totalItems);
 
 import { watch } from 'vue'
 import { useDisplay } from 'vuetify'

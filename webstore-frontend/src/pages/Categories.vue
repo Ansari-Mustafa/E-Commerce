@@ -1,3 +1,3 @@
 <template>
-    Categories
+    Categories Not Added
 </template>

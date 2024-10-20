@@ -1,9 +1,8 @@
 <template>
-  <v-card class="d-flex justify-space-between align-center pa-0" width="100px" rounded="lg"
-  elevation="3">
+  <v-card class="d-flex justify-space-between align-center pa-0" width="100px" rounded="lg" :elevation=props.elevation>
     <v-btn 
       @click="decrement" 
-      :disabled="count <= min" 
+      :disabled="itemInCart.quantity <= 1" 
       icon
       class="mx-0"
       size="36px"
@@ -14,11 +13,11 @@
       <v-icon>mdi-minus</v-icon>
     </v-btn>
 
-    <span class="px-1 text-body-1">{{ count }}</span>
+    <span class="px-1 text-body-1">{{ itemInCart.quantity }}</span>
 
     <v-btn 
       @click="increment" 
-      :disabled="count >= max" 
+      :disabled="itemInCart.quantity >= props.itemStock" 
       icon
       class="mx-0"
       size="36px"
@@ -30,32 +29,35 @@
     </v-btn>
   </v-card>
 </template>
+<script setup>
+import { useCartStore } from '@/stores/cart'; // Import the store
 
-<script>
-export default {
-  name: 'PlusMinusCounter',
-  data() {
-    return {
-      count: 1,
-      min: 1,
-      max: 20,
-    };
+const props = defineProps({
+  itemID: {
+    type: Number,
+    required: true
   },
-  methods: {
-    increment() {
-      if (this.count < this.max) {
-        this.count++;
-      }
-    },
-    decrement() {
-      if (this.count > this.min) {
-        this.count--;
-      }
-    }
-  }
-}
+  itemStock: {
+    type: Number,
+    required: true
+  },
+  elevation: {
+    type: Number,
+    required: true
+  },
+});
+
+const cartStore = useCartStore(); // Access the cart store
+
+const itemInCart = computed(() => {
+  return cartStore.cartItems.find(item => item.id === props.itemID) || { quantity: 1 };
+});
+
+const increment = () => {
+  cartStore.incrementQuantity(props.itemID);
+};
+
+const decrement = () => {
+  cartStore.decrementQuantity(props.itemID);
+};
 </script>
-
-<style scoped>
-
-</style>

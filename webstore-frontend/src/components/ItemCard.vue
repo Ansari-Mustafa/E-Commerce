@@ -6,7 +6,7 @@
     :width="260"
     :height="325">
 
-    <v-card-title>{{ name }}</v-card-title>
+    <v-card-title>{{ props.name }}</v-card-title>
 
     <v-img 
       :src="computedImg" 
@@ -18,7 +18,7 @@
       @error="onImageLoadError"
     ></v-img>
 
-    <v-card-text class="px-6">{{ price }} Rs.</v-card-text>
+    <v-card-text class="px-6">{{ props.price }} Rs.</v-card-text>
 
     <div class="d-flex justify-center align-center mx-auto my-auto">
         <v-fade-transition hide-on-leave>
@@ -33,7 +33,7 @@
             Add to Cart
         </v-btn>
 
-        <Counter v-else class="position-absolute left-0 bottom-0 ml-8 mb-2"/>
+        <Counter v-else class="position-absolute left-0 bottom-0 ml-8 mb-2" :itemID="props.id" :itemStock="props.stock" :elevation="3"/>
     </v-fade-transition>
         
 
@@ -49,46 +49,51 @@
 
     </v-card>
 </template>
-  
-<script>
+
+<script setup>
+import { ref, computed } from 'vue';
 import logo from '@/../public/logo.png';
 import Counter from './Counter.vue';
-export default {
-    name: 'ItemCard',
-    props: {
-        name: {
-            type: String,
-            required: true
-        },
-        img: {
-            type: String,
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true
-        }
-    }, data() {
-        return {
-            isImageLoaded: true, // Track if the image is loaded successfully
-            showCounter: false,
-        };
+import { useCartStore } from '@/stores/cart'; // Import the store
+
+const props = defineProps({
+    id: {
+        type: Number,
+        required: true
     },
-    computed: {
-        computedImg() {
-            // Return the image or default logo based on load status
-            return this.isImageLoaded ? this.img : logo; // Use imported logo
-        }
+    name: {
+        type: String,
+        required: true
     },
-    methods: {
-        // This method is called when the image fails to load
-        onImageLoadError() {
-            this.isImageLoaded = false; // Set to false if the image fails to load
-        },
-        addToCart() {
-            this.showCounter = true;
-        },
+    img: {
+        type: String,
+        required: true
     },
-    components: { Counter }
-}
+    price: {
+        type: Number,
+        required: true
+    },
+    stock: {
+        type: Number,
+        required: true
+    },
+});
+
+const isImageLoaded = ref(true); 
+const showCounter = ref(false);
+const cartStore = useCartStore(); // Access the cart store
+
+const computedImg = computed(() => {
+    return isImageLoaded.value ? props.img : logo; 
+});
+
+const onImageLoadError = () => {
+    isImageLoaded.value = false; 
+};
+
+const addToCart = () => {
+    cartStore.addItemToCart({ id: props.id, name: props.name, price: props.price, img: props.img, stock:props.stock });
+    showCounter.value = true;
+};
+
 </script>
