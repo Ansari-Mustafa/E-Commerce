@@ -30,8 +30,9 @@ const loginWithGoogle = () => {
   return signInWithPopup(auth, provider);
 };
 
-const logout = () => {
-  return signOut(auth);
+const logout = async () => {
+  await signOut(auth);
+  localStorage.removeItem('user');
 };
 
 const forgotPassword = async (email) => {

@@ -78,21 +78,46 @@ const handleLogin = async () => {
     }
 
     try {
-        await login(email.value, password.value);
+        const userCredential = await login(email.value, password.value);
+        const user = userCredential.user;
+
+        // Store user data in local storage
+        localStorage.setItem('user', JSON.stringify({
+            displayName: user.displayName,
+            emailVerified: user.emailVerified,
+            email: user.email,
+            photoURL: user.photoURL,
+            token: await user.getIdToken() // Get the token
+        }));
+
         router.push('/');
+        window.location.reload();
     } catch (error) {
         errorMessage.value = "Invalid Credentials";
     }
 };  
+ 
 
 const handleGoogleLogin = async () => {
-  try {
-    await loginWithGoogle();
-    router.push('/');
-  } catch (error) {
-    errorMessage.value = error.message;
-  }
+    try {
+        const userCredential = await loginWithGoogle();
+        const user = userCredential.user;
+
+        // Store user data in local storage
+        localStorage.setItem('user', JSON.stringify({
+            displayName: user.displayName,
+            emailVerified: user.emailVerified,
+            email: user.email,
+            photoURL: user.photoURL,
+            token: await user.getIdToken() // Get the token
+        }));
+
+        router.push('/');
+    } catch (error) {
+        errorMessage.value = error.message;
+    }
 };
+
 
 const visible = ref(false)
 

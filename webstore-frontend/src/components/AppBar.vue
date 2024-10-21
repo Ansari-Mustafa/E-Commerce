@@ -74,7 +74,7 @@
           clearable
           ></v-text-field>
 
-          <v-btn icon @click="navigateTo('/add-products')">
+          <v-btn id="profile-menu" icon>
             <v-icon>mdi-account</v-icon>
           </v-btn>
 
@@ -144,12 +144,15 @@
     </v-navigation-drawer>
 
     <Cart ref="cartRef" />
+
+    <ProfileMenu/>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import Cart from '@/components/CartDialog.vue';
+
 
 import { useCartStore } from '@/stores/cart';
 const cartStore = useCartStore();
@@ -165,6 +168,7 @@ const totalCartItems = computed(() => cartStore.totalItems);
 
 import { watch } from 'vue'
 import { useDisplay } from 'vuetify'
+import ProfileMenu from './ProfileMenu.vue';
 
 const { mobile } = useDisplay();
 const isMobile = ref(mobile.value); // Initialize with the current value
