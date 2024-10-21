@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   updateProfile,
   sendPasswordResetEmail,
+  onAuthStateChanged,
   } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
@@ -38,4 +39,25 @@ const forgotPassword = async (email) => {
   return sendPasswordResetEmail(auth, email);
 };
 
-export { register, login, loginWithGoogle, logout, forgotPassword };
+const checkEmailVerification = (router, notVerified) => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await user.reload();
+        if (user.emailVerified) {
+          unsubscribe();
+          router.push('/');
+          resolve();
+        } else {
+          console.log('Email not verified yet.');
+          notVerified.value = true;
+          resolve();
+        }
+      } else {
+        reject(new Error('No user found'));
+      }
+    });
+  });
+};
+
+export { register, login, loginWithGoogle, logout, forgotPassword, checkEmailVerification };

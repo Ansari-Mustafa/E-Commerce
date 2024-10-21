@@ -119,9 +119,7 @@
   <script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { register } from '@/router/authService';
-  import { auth } from '@/firebase/firebase.config';
-  import { onAuthStateChanged } from 'firebase/auth';
+  import { register, checkEmailVerification } from '@/router/authService'
   
   const loadingProgress = ref(false);
   const router = useRouter();
@@ -174,6 +172,7 @@
     try {
       await register(firstName.value, lastName.value, email.value, password.value);
       step.value++;
+      await checkEmailVerification(router, notVerified);
     //   checkEmailVerification();
     } catch (error) {
       if (error.message.includes("email-already-in-use")) {
@@ -184,21 +183,6 @@
         errorMessage.value = "Registration failed. Please try again.";
       }
     }
-  };
- 
-  const checkEmailVerification = async () => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await user.reload();
-        if (user.emailVerified) {
-          unsubscribe();
-          router.push('/');
-        } else {
-          console.log('Email not verified yet.');
-          notVerified.value = true;
-        }
-      }
-    });
   };
   </script>
   
