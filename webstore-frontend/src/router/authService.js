@@ -1,4 +1,3 @@
-// src/authService.js
 import { auth } from '@/firebase/firebase.config';
 import {
   createUserWithEmailAndPassword,
@@ -9,7 +8,7 @@ import {
   GoogleAuthProvider,
   updateProfile,
   sendPasswordResetEmail,
-} from "firebase/auth";
+  } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
 

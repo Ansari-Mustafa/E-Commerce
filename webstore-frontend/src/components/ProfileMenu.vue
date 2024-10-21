@@ -1,18 +1,40 @@
 <template>
     <v-menu activator="#profile-menu" :close-on-content-click="false">
-      <v-card min-width="400" v-if="user">
+      <v-card min-width="200" v-if="user">
         <v-list>
-          <v-list-item :subtitle="user.email" :title="user.displayName">
-            <template v-slot:append>
-              <v-btn
-                :class="fav ? 'text-red' : ''"
-                icon="mdi-heart"
-                variant="text"
-                @click="fav = !fav"
-              ></v-btn>
-            </template>
+          <v-list-item :prepend-avatar="user.photoURL" :subtitle="user.email" :title="user.displayName">
           </v-list-item>
+          <v-divider></v-divider>
+            <v-list-item
+            :ripple="{ class: 'text-primary' }"
+            @click="console.log('Orders')"
+              class="w-100"
+                prepend-icon="mdi-shopping"
+              >My Orders
+            </v-list-item>
+            <v-list-item
+            :ripple="{ class: 'text-primary' }"
+            @click="console.log('Address')"
+              class="w-100"
+                prepend-icon="mdi-map-marker-multiple"
+              >Shipping Address
+            </v-list-item>
+            <v-list-item
+            :ripple="{ class: 'text-primary' }"
+            @click="console.log('Wishlist')"
+              class="w-100"
+                prepend-icon="mdi-heart"
+              >Wishlist
+            </v-list-item>
+            <v-list-item
+            :ripple="{ class: 'text-primary' }"
+            @click="console.log('Account')"
+              class="w-100"
+                prepend-icon="mdi-account-star"
+              >Account Details
+            </v-list-item>
         </v-list>
+
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn
@@ -21,7 +43,7 @@
             color="lab"
             @click="handleEditProfile"
           >
-            Edit
+            Edit Profile
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn
@@ -34,8 +56,17 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      <v-card min-width="400" v-else>
-        <v-card-actions>
+      <v-card v-else>
+        <v-card-actions class="d-flex flex-column">
+          <v-btn
+          class="w-100"
+            color="primary"
+            variant="tonal"
+            append-icon="mdi-login"
+            @click="router.push('/login')"
+          >
+            Login
+          </v-btn>
           <v-btn
             append-icon="mdi-account-plus"
             variant="tonal"
@@ -43,15 +74,6 @@
             @click="router.push('/register')"
           >
             Register
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            variant="tonal"
-            append-icon="mdi-login"
-            @click="router.push('/login')"
-          >
-            Login
           </v-btn>
         </v-card-actions>
       </v-card>

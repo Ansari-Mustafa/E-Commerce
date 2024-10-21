@@ -10,6 +10,8 @@ import Register from '@/pages/Register.vue'
 import VerifyEmail from '@/components/VerifyEmail.vue'
 import UIComp from '@/components/UIComp.vue'
 import ResetPassword from '@/components/ResetPassword.vue'
+import NotFound from '@/pages/NotFound.vue'
+import { auth } from '@/firebase/firebase.config';
 
 const routes = [
   {
@@ -63,11 +65,29 @@ const routes = [
     name: 'UploadProducts',
     component: UploadProducts,
   },
+  {
+    path: '/:catchAll(.*)', // This will match all routes not defined above
+    name: 'NotFound',
+    component: NotFound,
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  // Check if the route requires authentication
+  if ((to.name === 'Login' || to.name === 'Register') && user) {
+    // If the user is logged in, redirect to home
+    next('/');
+  } else {
+    // Allow access
+    next();
+  }
 });
 
 export default router;

@@ -89,8 +89,6 @@ const handleLogin = async () => {
             photoURL: user.photoURL,
             token: await user.getIdToken() // Get the token
         }));
-
-        router.push('/');
         window.location.reload();
     } catch (error) {
         errorMessage.value = "Invalid Credentials";
@@ -112,7 +110,7 @@ const handleGoogleLogin = async () => {
             token: await user.getIdToken() // Get the token
         }));
 
-        router.push('/');
+        window.location.reload();
     } catch (error) {
         errorMessage.value = error.message;
     }
