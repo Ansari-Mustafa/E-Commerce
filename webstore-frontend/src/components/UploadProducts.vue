@@ -67,7 +67,6 @@
           prepend-icon="mdi-image"
           show-size
           accept="image/*"
-          :rules="coverImageRules"
         ></v-file-input>
 
         <v-file-input
