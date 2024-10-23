@@ -10,8 +10,9 @@
           <ItemCard
             :id="item.id"
             :name="item.name"
-            :img="item.img"
+            :img="item.coverImage"
             :price="item.price"
+            :old_price="item.old_price"
             :stock="item.stock"
           />
         </v-col>

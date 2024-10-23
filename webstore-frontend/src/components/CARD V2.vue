@@ -11,20 +11,30 @@
     <v-img 
       :src="computedImg" 
       class="ma-auto"
-      :max-width="300"
-      :max-height="220"
+      :max-width="240"
+      :max-height="180"
       :min-width="240"
       :min-height="180"
       @error="onImageLoadError"
     ></v-img>
 
+    <div class="d-flex justify-center align-end mt-6">
+        <p class="font-weight-bold text-body-1 mr-2">{{ props.price }} Rs.</p>
+        <p v-if="props.old_price" class="text-decoration-line-through text-red font-weight-bold text-caption">{{ props.old_price }} Rs.</p>
+    </div>
 
     <div class="d-flex justify-center my-auto">
-        <div class="d-flex-row justify-center align-end mb-1 position-absolute bottom-0 left-0 ml-6">
-            <p class="font-weight-bold text-body-1 mr-2 text-start mb-n2">{{ props.price }} Rs.</p>
-            <p v-if="props.old_price" class="text-decoration-line-through text-red font-weight-bold text-caption text-end mr-n4">{{ props.old_price }} Rs.</p>
-        </div>
-        
+        <v-rating
+            class="position-absolute left-0 bottom-0 ml-3 mb-2 py-2"
+            half-increments
+            density="compact"
+            readonly
+            :length="5"
+            :size="20"
+            :model-value="props.rating"
+            color=""
+            active-color="yellow-darken-3"
+            />
         <v-fade-transition hide-on-leave>
             <v-btn v-if="!showCounter"
             color="blue"
@@ -37,7 +47,7 @@
             Add to Cart
         </v-btn>
 
-        <Counter v-else class="position-absolute right-0 bottom-0 mr-6 mb-2" :itemID="props.id" :itemStock="props.stock" :elevation="1"/>
+        <Counter v-else class="position-absolute left-0 bottom-0 ml-8 mb-2" :itemID="props.id" :itemStock="props.stock" :elevation="3"/>
     </v-fade-transition>
         
 

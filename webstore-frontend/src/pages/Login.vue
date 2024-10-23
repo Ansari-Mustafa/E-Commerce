@@ -87,7 +87,8 @@ const handleLogin = async () => {
             emailVerified: user.emailVerified,
             email: user.email,
             photoURL: user.photoURL,
-            token: await user.getIdToken() // Get the token
+            token: await user.getIdToken(),
+            uid: user.uid
         }));
         window.location.reload();
     } catch (error) {
@@ -100,6 +101,8 @@ const handleGoogleLogin = async () => {
     try {
         const userCredential = await loginWithGoogle();
         const user = userCredential.user;
+        console.log(user);
+        console.log(userCredential)
 
         // Store user data in local storage
         localStorage.setItem('user', JSON.stringify({
@@ -107,7 +110,8 @@ const handleGoogleLogin = async () => {
             emailVerified: user.emailVerified,
             email: user.email,
             photoURL: user.photoURL,
-            token: await user.getIdToken() // Get the token
+            token: await user.getIdToken(),
+            uid: user.uid
         }));
 
         window.location.reload();

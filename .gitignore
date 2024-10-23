@@ -22,3 +22,6 @@ pnpm-debug.log*
 *.sw?
 
 .eslintrc-auto-import.json
+
+.env.development
+.env.production

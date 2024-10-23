@@ -77,16 +77,29 @@ const router = createRouter({
   routes,
 });
 
+
+const admins = ref(import.meta.env.VITE_ADMINS.split(','));
+
 router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem('user'));
 
   // Check if the route requires authentication
   if ((to.name === 'Login' || to.name === 'Register') && user) {
-    // If the user is logged in, redirect to home
     next('/');
+  } else if (to.name === 'UploadProducts') {
+    // Check if user is logged in
+    if (user) {
+      // Check if the user is an admin
+      if (admins.value.includes(user.uid)) {
+        next(); // Allow access to UploadProducts
+      } else {
+        next('/'); // Redirect to Home if not an admin
+      }
+    } else {
+      next('/login'); // Redirect to login if not logged in
+    }
   } else {
-    // Allow access
-    next();
+    next(); // Allow access to other routes
   }
 });
 

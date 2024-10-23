@@ -33,6 +33,13 @@
                 prepend-icon="mdi-account-star"
               >Account Details
             </v-list-item>
+            <v-list-item v-if="admins.includes(user.uid)"
+            :ripple="{ class: 'text-primary' }"
+            @click="$router.push('/add-products')"
+              class="w-100"
+                prepend-icon="mdi-shield-account"
+              >Admin Panel
+            </v-list-item>
         </v-list>
 
         <v-divider></v-divider>
@@ -83,11 +90,12 @@
   <script setup>
   import { ref } from 'vue';
   import { logout } from '@/router/authService';
-import { useRouter } from 'vue-router';
-const router = useRouter();
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
   
   const user = JSON.parse(localStorage.getItem('user'));
   const fav = ref(false);
+  const admins = ref(import.meta.env.VITE_ADMINS.split(','));
   
   // Handle logout function
   const handleLogout = async () => {
