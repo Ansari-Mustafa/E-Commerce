@@ -21,8 +21,8 @@
 
     <div class="d-flex justify-center my-auto">
         <div class="d-flex-row justify-center align-end mb-1 position-absolute bottom-0 left-0 ml-6">
-            <p class="font-weight-bold text-body-1 mr-2 text-start mb-n2">{{ props.price }} Rs.</p>
-            <p v-if="props.old_price" class="text-decoration-line-through text-red font-weight-bold text-caption text-end mr-n4">{{ props.old_price }} Rs.</p>
+            <p v-if="props.old_price" class="text-decoration-line-through text-red font-weight-bold text-caption ml-n2 text-start mb-n2">{{ props.old_price }} Rs.</p>
+            <p class="font-weight-bold text-body-1 ml-2 mb-2">{{ props.price }} Rs.</p>
         </div>
         
         <v-fade-transition hide-on-leave>

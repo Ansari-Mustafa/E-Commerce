@@ -44,8 +44,9 @@ const productSchema = new mongoose.Schema({
     },
     old_price: {
         type: Number,
-        min: 0
-    },
+        min: 0,
+        default: 0 // Set a default value
+    },    
     images: {
         type: [String], // Array of image URLs
         required: true
@@ -53,7 +54,8 @@ const productSchema = new mongoose.Schema({
     rating: {
         type: Number,
         min: 0,
-        max: 5
+        max: 5,
+        default: 0 // Set a default value
     },
     sortOrder: {
         type: Number,

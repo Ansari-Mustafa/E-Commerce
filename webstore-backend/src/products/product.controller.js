@@ -22,12 +22,23 @@ const upload = multer({ storage }).fields([{ name: 'coverImage' }, { name: 'imag
 
 const addProduct = async (req, res) => {
     try {
-        const { name, description, category, tags, specs, stock, price, old_price, rating, sortOrder } = req.body;
+        const { 
+            name, 
+            description, 
+            category, 
+            tags, 
+            specs, 
+            stock, 
+            price, 
+            old_price, 
+            rating, 
+            sortOrder 
+        } = req.body;
 
+        // Set default values if not provided
         const coverImage = req.files['coverImage'] ? req.files['coverImage'][0] : null;
         const images = req.files['images'] || [];
-
-        // Upload images to Cloudinary and get URLs
+        
         const coverImageUrl = coverImage ? await uploadToCloudinary(coverImage) : null;
         const imageUrls = await Promise.all(images.map(img => uploadToCloudinary(img)));
 
@@ -40,10 +51,10 @@ const addProduct = async (req, res) => {
             coverImage: coverImageUrl,
             stock,
             price,
-            old_price,
+            old_price: old_price !== undefined && old_price !== null && !isNaN(old_price) ? old_price : 0, // Default to 0 if invalid
             images: imageUrls,
-            rating,
-            sortOrder,
+            rating: rating !== undefined && rating !== null && !isNaN(rating) ? rating : 0, // Default to 0 if invalid
+            sortOrder: sortOrder !== undefined ? sortOrder : 0 // Use provided sortOrder or default to 0
         });
 
         await newProduct.save();
@@ -53,6 +64,7 @@ const addProduct = async (req, res) => {
         res.status(500).send({ message: "Error adding product!", error: error.message });
     }
 };
+
 
 async function uploadToCloudinary(file) {
     return new Promise((resolve, reject) => {

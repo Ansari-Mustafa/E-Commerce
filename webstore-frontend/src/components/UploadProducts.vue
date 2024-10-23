@@ -158,7 +158,10 @@
             ></v-number-input>
           </v-row>
 
-          <v-btn color="primary" @click="submit" :disabled="!isFormValid">Submit</v-btn>
+          <v-btn color="primary" @click="submit" :disabled="!isFormValid" :loading="loading">Add Product</v-btn>
+          <div v-if="message" :class="{'text-green': isSuccess, 'text-red': !isSuccess}" class="mt-2">
+            {{ message }}
+          </div>
         </v-form>
       </v-container>
     </v-col>
@@ -196,6 +199,9 @@ const product = ref({
   rating: null,
   sortOrder: 0,
 });
+const loading = ref(false);
+const message = ref('');
+const isSuccess = ref(false);
 const tagsInput = ref('');
 const specsInput = ref('');
 const coverImage = ref(null);
@@ -242,6 +248,8 @@ const isFormValid = computed(() => {
 });
 
 const submit = async () => {
+  loading.value = true;
+  message.value = '';
   const formData = new FormData();
   formData.append('coverImage', coverImage.value);
   imageFiles.value.forEach(file => {
@@ -265,10 +273,16 @@ const submit = async () => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    // Handle success
+    message.value = 'Product added successfully!';
+    isSuccess.value = true;
+    resetForm(); 
   } catch (error) {
     console.error("Error adding Product!", error);
-    // Handle error
+    message.value = 'Failed to add product. Please try again.';
+    isSuccess.value = false;
+    showPreview = false;
+  } finally {
+    loading.value = false; // Set loading to false after request
   }
 };
 
