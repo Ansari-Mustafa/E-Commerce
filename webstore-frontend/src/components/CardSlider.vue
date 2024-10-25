@@ -1,53 +1,56 @@
 <template>
-    <v-sheet class="mx-auto px-0 bg-backgroundsec" elevation="8" width="full">
-      <v-slide-group
-        v-model="model"
-        class="py-2 px-0"
-        selected-class="bg"
-        show-arrows
+  <v-sheet class="mx-auto px-0 bg-backgroundsec" elevation="8" width="full">
+    <v-slide-group
+      v-model="model"
+      class="py-2 px-0"
+      selected-class="bg"
+      show-arrows
+    >
+      <v-slide-group-item
+        v-for="item in itemList"
+        :key="item.id"
+        v-slot="{ isSelected, toggle, selectedClass }"
       >
-        <v-slide-group-item
-          v-for="item in items"
-          :key="item.id"
-          v-slot="{ isSelected, toggle, selectedClass }"
-        >
-          <ItemCard
-            :id="item.id"
-            :name="item.name"
-            :img="item.img"
-            :price="item.price"
-            :stock="item.stock"
-            @click="toggle"
-            :class="['ma-4', selectedClass]"
-            class="mr-4"
-          />
-        </v-slide-group-item>
-      </v-slide-group>
-    </v-sheet>
-  </template>
+        <ItemCard
+          :id="item._id"
+          :name="item.name"
+          :img="item.coverImage"
+          :price="item.price"
+          :old_price="item.old_price"
+          :stock="item.stock"
+          @click="toggle"
+          :class="['ma-4', selectedClass]"
+          class="mr-4"
+        />
+      </v-slide-group-item>
+    </v-slide-group>
+  </v-sheet>
+</template>
   
-  <script>
-  import ItemCard from './ItemCard.vue';
-  
-  export default {
-    components: {
-      ItemCard,
-    },
-    data() {
-      return {
-        model: null,
-        items: [
-          { id: 1, name: 'Item 1', img: '/logo.png', price: 100, stock: 12 },
-          { id: 2, name: 'Item 2', img: 'path/to/image2.jpg', price: 200, stock: 8 },
-          { id: 3, name: 'Item 3', img: '/logo.png', price: 100, stock: 15 },
-          { id: 4, name: 'Item 4', img: 'path/to/image2.jpg', price: 200, stock: 5 },
-          { id: 5, name: 'Item 5', img: '/logo.png', price: 100, stock: 7 },
-          { id: 6, name: 'Item 6', img: 'path/to/image2.jpg', price: 200, stock: 10 },
-          { id: 7, name: 'Item 7', img: '/logo.png', price: 100, stock: 3 },
-          { id: 8, name: 'Item 8', img: 'path/to/image2.jpg', price: 200, stock: 6 },
-        ],
-      };
-    },
-  };
-  </script>
-  
+<script setup>
+import { ref, onMounted } from 'vue';
+import ItemCard from '@/components/ItemCard.vue';
+
+const loading = ref(false); // Define loading state
+const model = ref(null); // Define model for v-model binding
+const itemList = ref([]);
+
+const fetchJsonData = async () => {
+  loading.value = true;
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const jsonData = await response.json();
+    console.log(jsonData);
+    itemList.value = jsonData;
+  } catch (error) {
+    console.error('Error fetching JSON data:', error);
+  } finally {
+    loading.value = false; // Set loading to false after fetching
+  }
+};
+
+onMounted(fetchJsonData);
+</script>
