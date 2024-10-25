@@ -27,7 +27,7 @@
                 <v-spacer></v-spacer>
                 <v-col class="text-center">
                     <Counter class="position-absolute top-0 right-0 mt-1 mr-0.5" :itemID="item.id" :itemStock="item.stock" :elevation="0"/>
-                    <v-btn :ripple="false" class="position-absolute bottom-0 right-0 mb-2 mr-6" icon="mdi-delete" variant="text" color="red"></v-btn>
+                    <v-btn @click="cartStore.removeItemFromCart(item.id)" :ripple="false" class="position-absolute bottom-0 right-0 mb-2 mr-6" icon="mdi-delete" variant="text" color="red"></v-btn>
                 </v-col>
                 <!-- <v-col>
                     <v-row class="mt-2 justify-space-between align-center">

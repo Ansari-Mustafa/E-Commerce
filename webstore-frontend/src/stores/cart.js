@@ -41,9 +41,15 @@ export const useCartStore = defineStore('cart', () => {
     if (item && item.quantity > 1) {
       item.quantity--
     } else {
-      // Optionally, remove the item when quantity is zero
+      // Remove the item when quantity is zero
       cartItems.value = cartItems.value.filter(cartItem => cartItem.id !== itemID)
     }
+    updateLocalStorage() // Update localStorage here
+  }
+
+  // Remove an item from the cart
+  const removeItemFromCart = (itemID) => {
+    cartItems.value = cartItems.value.filter(cartItem => cartItem.id !== itemID)
     updateLocalStorage() // Update localStorage here
   }
 
@@ -56,6 +62,7 @@ export const useCartStore = defineStore('cart', () => {
     totalItems,
     addItemToCart,
     incrementQuantity,
-    decrementQuantity
+    decrementQuantity,
+    removeItemFromCart
   }
 })
