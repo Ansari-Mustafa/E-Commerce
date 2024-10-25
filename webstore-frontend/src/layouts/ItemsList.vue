@@ -8,7 +8,7 @@
           :style="{ maxHeight: rowHeight + 'px', minHeight: '360px' }" 
         >
           <ItemCard
-            :id="item.id"
+            :id="item._id"
             :name="item.name"
             :img="item.coverImage"
             :price="item.price"
