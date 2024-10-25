@@ -11,6 +11,7 @@ import VerifyEmail from '@/components/VerifyEmail.vue'
 import UIComp from '@/components/UIComp.vue'
 import ResetPassword from '@/components/ResetPassword.vue'
 import NotFound from '@/pages/NotFound.vue'
+import Checkout from '@/pages/Checkout.vue';
 import { auth } from '@/firebase/firebase.config';
 
 const routes = [
@@ -64,6 +65,11 @@ const routes = [
     path: '/add-products',
     name: 'UploadProducts',
     component: UploadProducts,
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout,
   },
   {
     path: '/:catchAll(.*)', // This will match all routes not defined above

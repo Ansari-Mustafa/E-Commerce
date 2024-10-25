@@ -78,7 +78,7 @@
             <v-icon>mdi-account</v-icon>
           </v-btn>
 
-          <v-btn icon @click="openCart" class="mr-2">
+          <v-btn icon @click="dialog = true" class="mr-2">
           <v-badge :content="totalCartItems">
               <v-icon>mdi-cart</v-icon> 
           </v-badge>
@@ -127,7 +127,7 @@
           </v-list-item>
           <v-list-item
             class="d-flex justify-space-between mb-2"
-            @click="navigateTo('/services')"
+            @click="navigateTo('/ui')"
             append-icon="mdi-shape-plus"
           >
             <span>Services</span>
@@ -143,7 +143,18 @@
       </v-list>
     </v-navigation-drawer>
 
-    <Cart ref="cartRef" />
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title class="d-flex align-center mt-2">
+          <v-icon class="me-2">mdi-cart</v-icon>
+          <span class="headline">Your Cart</span>
+          <v-spacer></v-spacer>
+          <v-btn icon="mdi-close" rounded="lg"variant="text" @click="dialog = false"></v-btn>
+        </v-card-title>
+        <v-card-text> <Cart /> </v-card-text>
+      </v-card>
+        <v-btn color="lab" @click="dialog = false; navigateTo('/checkout');">Proceed to Checkout</v-btn>
+    </v-dialog>
 
     <ProfileMenu/>
   </div>
@@ -151,7 +162,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import Cart from '@/components/CartDialog.vue';
+import Cart from '@/components/CartItems.vue';
+const dialog = ref(false);
 
 
 import { useCartStore } from '@/stores/cart';
@@ -159,11 +171,6 @@ const cartStore = useCartStore();
 const cartRef = ref(null);
 import { useRouter } from 'vue-router';
 
-const openCart = () => {
-  if (cartRef.value) {
-    cartRef.value.open();
-  }
-};
 const totalCartItems = computed(() => cartStore.totalItems);
 
 import { watch } from 'vue'
